@@ -1,8 +1,10 @@
 package ma.sdia.comptecqrses.commonApi.commands;
 
+import lombok.Getter;
+
 public class CreditAccountCommand extends  BaseCommand<String>{
-    private double amount;
-    private String currency; //dh or $ ...
+    @Getter private double amount;
+    @Getter private String currency; //dh or $ ...
     public CreditAccountCommand(String id, double amount, String currency) {
         super(id);
         this.currency=currency;

@@ -1,8 +1,8 @@
 package ma.sdia.comptecqrses.commands.controllers;
 
 import lombok.AllArgsConstructor;
-import ma.sdia.comptecqrses.commonApi.commands.CreateAccountCommand;
-import ma.sdia.comptecqrses.commonApi.dtos.CreateAccountRequestDTO;
+import ma.sdia.comptecqrses.commonApi.commands.*;
+import ma.sdia.comptecqrses.commonApi.dtos.*;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,25 @@ public class AccountCommandController {
         CompletableFuture<String> commandResponse=commandGateway.send(new CreateAccountCommand(
                 UUID.randomUUID().toString(),
                 request.getInitialBalance(),
+                request.getCurrency()
+        ));
+        return commandResponse;
+    }
+    @PutMapping(path = "/credit")
+    public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDTO request){
+        CompletableFuture<String> commandResponse=commandGateway.send(new CreditAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()
+        ));
+        return commandResponse;
+    }
+
+    @PutMapping(path = "/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequestDTO request){
+        CompletableFuture<String> commandResponse=commandGateway.send(new DebitAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
                 request.getCurrency()
         ));
         return commandResponse;
